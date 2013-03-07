@@ -4,9 +4,11 @@
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
-  fisheye = function(canvas_id, theta, rad, origX, origY) {
-    var a, backCanvas, backCtx, backData, backdataContainer, canvas, ctx, data, dataContainer, dim, dorig, halfh, halfw, height, i, ipix, j, newx, newy, nx, ny, opix, width, z;
-    theta *= Math.PI / 180;
+  fisheye = function(canvas_id, xrad, yrad, origX, origY) {
+    var aX, aY, backCanvas, backCtx, backdataContainer, canvas, ctx, data, dataContainer, dim, dorig, halfh, halfw, height, i, ipix, j, newx, newy, nx, ny, opix, rad, thetaX, thetaY, width, z;
+    origX = parseFloat(origX);
+    origY = parseFloat(origY);
+    rad = parseFloat(rad);
     canvas = document.getElementById(canvas_id);
     ctx = canvas.getContext("2d");
     ctx.drawImage(window.bob, 0, 0, canvas.width, canvas.height);
@@ -14,47 +16,43 @@
     console.log("width " + width);
     height = canvas.height;
     console.log("height " + height);
-    dataContainer = ctx.getImageData(0, 0, width, height);
-    data = dataContainer.data;
-    dim = width * height * 4;
-    console.log("fisheye dim w*h*4 " + dim + " data.length " + data.length);
+    thetaX = (xrad * 150 * Math.PI / 180) / width;
+    thetaY = (yrad * 210 * Math.PI / 180) / width;
     backCanvas = document.createElement('canvas');
     backCanvas.width = canvas.width;
     backCanvas.height = canvas.height;
     backCtx = backCanvas.getContext('2d');
     backCtx.drawImage(canvas, 0, 0);
     backdataContainer = ctx.getImageData(0, 0, width, height);
-    backData = backdataContainer.data;
-    dorig = [];
-    dorig.length = data.length;
-    i = 0;
-    while (i < dim) {
-      dorig[i] = data[i];
-      dorig[i + 1] = data[i + 1];
-      dorig[i + 2] = data[i + 2];
-      dorig[i + 3] = data[i + 3];
-      i++;
-    }
-    i = 0;
-    j = 0;
+    dorig = backdataContainer.data;
+    ctx.save();
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+    dataContainer = ctx.getImageData(0, 0, width, height);
+    data = dataContainer.data;
+    dim = width * height * 4;
+    console.log("fisheye dim w*h*4 " + dim + " data.length " + data.length);
     halfw = width / 2;
     halfh = height / 2;
+    i = 0;
     while (i < height) {
+      j = 0;
       while (j < width) {
         ipix = (i * width + j) * 4;
         nx = (j - origX) / width;
         ny = (i - origY) / height;
         z = Math.sqrt(1.0 - nx * nx - ny * ny);
-        a = 1.0 / (z * Math.tan(theta * 0.5));
-        newx = nx * a * width;
-        newy = ny * a * height;
-        console.log('orig x,y', j, i, 'new x,y', newx, newy);
+        aX = 1.0 / (z * Math.tan(thetaX * 0.5));
+        aY = 1.0 / (z * Math.tan(thetaY * 0.5));
+        newx = parseInt(nx * aX + origX, 10);
+        newy = parseInt(ny * aY + origY, 10);
         if (((width > newx && newx >= 0)) && ((height > newy && newy >= 0))) {
           opix = (newy * width + newx) * 4;
-          data[opix] = dorig[ipix];
-          data[opix + 1] = dorig[ipix + 1];
-          data[opix + 2] = dorig[ipix + 2];
-          data[opix + 3] = dorig[ipix + 3];
+          data[ipix] = dorig[opix];
+          data[ipix + 1] = dorig[opix + 1];
+          data[ipix + 2] = dorig[opix + 2];
+          data[ipix + 3] = dorig[opix + 3];
         }
         j++;
       }
