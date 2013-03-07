@@ -1,5 +1,5 @@
-![color-balance](https://github.com/victusfate/color-balance/raw/gh-pages/color-balance.png)
-Color Balance
+![fish-eye](https://github.com/victusfate/fish-eye/raw/gh-pages/fish-eye.jpg)
+Fish Eye
 ===
 
-A demo for color balance which takes in dynamic shadow, midtones, and highlights lightness levels and adds a specified red, green, and blue value to each pixel in that lightness category.
+A demo for fish eye (orthographic) mapping radius, and origin x,y for the effect.
