@@ -301,3 +301,7 @@ button:active {
     background: -moz-linear-gradient(top,  #33ffff,  #ff00ff);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#33ffff', endColorstr='#ff00ff');
 }
+
+.ui-slider { width: 10% !important;}
+.ui-slider .ui-slider-handle { width: 10px !important;}
+
