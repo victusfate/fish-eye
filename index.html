@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <title>Fish-eye by victusfate</title>
+   
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Fish-eye</h1>
+        <h2>image processing for visual fisheye effect</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/victusfate/fish-eye/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/victusfate/fish-eye/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/victusfate/fish-eye" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+<!--    <div class="container">
+      <section id="main_content">
+-->
+        <div style="position:relative; float:left; width:100%;">
+            <img src="BobRoss.jpg" style="float:left; padding: 20px; width:45%;" />
+            <canvas id="screen" width="640px" height = "480px" style="position:relative; float:left; padding: 20px; width:45%;"> 
+                <h1>This application requires a HTML5 compliant browser.</h1>
+            </canvas>
+        </div>
+        <div style="position:relative; left: 20px; font-size:16px;text-align:left; float:left;">
+            <script type="text/javascript">
+                function updateform() {
+                    var theta,rad, origX, origY;
+                    rad     = $('#rad').val();
+                    origX   = $('#origX').val();
+                    origY   = $('#origY').val();
+                    console.log("rad " + rad + " origX " + origX + " origY " + origY );
+                    window.fisheye('screen', rad, origX, origY );                    
+                    return false;
+                }
+            </script>
+            <form id="colorForm" onsubmit="return window.updateform();">  
+                <div style="float:right; margin: -10px 10px 0px 0px;">
+                    <br/>
+                    This is a demo for applying the fisheye effect:<br/> 
+                    radius <input id="rad" type="text" value="" />
+                    origX <input id="origX" type="text" value="" />
+                    origY <input id="origY" type="text" value="" /> <br/>
+                    <br/>
+                    <button onclick="" type="submit" class="mygrad">submit</button>
+                </div>
+            </form>
+        </div>
+
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.1.0.min.js"></script>
+
+        <script type='text/javascript'>
+            !window.jQuery && 
+            document.write('<script src="js/jquery-1.9.1.min.js"><\/script>') && 
+            document.write('<script src="js/jquery-migrate-1.1.0.min.js"><\/script>');
+        </script>
+
+
+        <script type='text/javascript' src="http://jashkenas.github.com/coffee-script/extras/coffee-script.js"></script>  
+        <script>
+            !window.CoffeeScript && document.write('<script src="js/coffee-script.js"><\/script>');
+        </script>
+
+        <script type="text/coffeescript">
+            $ ->
+                window.bob = new Image();
+                window.bob.onload = (evt) ->
+                    canvas = document.getElementById("screen")
+                    if canvas.getContext
+                        canvas.width = @width
+                        canvas.height = @height
+                    ctx = canvas.getContext("2d")
+                    ctx.drawImage window.bob, 0, 0
+                    $('#rad').val 10
+                    $('#origX').val @width/2
+                    $('#origY').val @height/2
+
+                window.bob.src = "BobRoss.jpg"
+
+        </script>
+        <script type="text/javascript" src="js/fisheye.js"></script> 
+<!--        <script type="text/coffeescript" src="src/fisheye.coffee"></script>  -->
+
+      
+<!--       </section>
+    </container>
+    -->
+  </body>
+</html>
